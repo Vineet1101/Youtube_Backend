@@ -1,7 +1,13 @@
 import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import connectDB from './db/index.js';
+import {app} from "./app.js"
+import dotenv from "dotenv"
 
-const app = new Hono()
+dotenv.config({
+  path:"./.env"
+})
+
+connectDB()
 
 app.get('/', (c) => {
   return c.text('Hello Hono!')
