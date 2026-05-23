@@ -8,14 +8,21 @@ dotenv.config({
 })
 
 connectDB()
-
-app.get('/', (c) => {
-  return c.text('Hello Hono!')
-})
-
-serve({
+.then(()=>{
+  serve({
   fetch: app.fetch,
   port: 3000
 }, (info) => {
   console.log(`Server is running on http://localhost:${info.port}`)
+  
 })
+
+})
+.catch((err)=>{
+  console.error("Failed to connect to database:",err);
+  
+})
+app.get('/', (c) => {
+  return c.text('Hello Hono!')
+})
+
