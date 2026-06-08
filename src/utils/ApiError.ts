@@ -1,8 +1,13 @@
+import type { StatusCode } from "hono/utils/http-status";
+
 class ApiError extends Error{
-    constructor(statusCode:Number,message="Something went wrong",error=[],stack=""){
+
+    statusCode:number
+    success:boolean
+    errors
+    constructor(statusCode:number,message="Something went wrong",error=[],stack=""){
         super(message)
         this.statusCode=statusCode
-        this.data=null
         this.message=message
         this.success=false,
         this.errors=error
@@ -14,6 +19,19 @@ class ApiError extends Error{
             Error.captureStackTrace(this,this.constructor)
         }
     }
+
+
+static  badRequest(statusCode:StatusCode,message:string){
+    return new ApiError(400,message)
 }
 
+static  unauthorized(message='Unauthorized'){
+    return new ApiError(401,'Unauthorized')
+}
+
+
+static  notFound(message="Resource not found"){
+    return new ApiError(400,message)
+}
+}
 export {ApiError}

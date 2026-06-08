@@ -1,10 +1,10 @@
-import type { Next } from "hono";
+import type { Context, Next } from "hono";
 
-const asyncHandler=(fn:Function)=>async(req:Request,res:Response,next:Next)=>{
+const asyncHandler=(fn:Function)=>async(c:Context,next:Next)=>{
     try {
-        await fn(req,res,next)
-    } catch (err) {
-        res.(err.code || 500).json({success:false,message:err.message})
+        await fn(c,next)
+    } catch (err:any) {
+        c.json({success:false,message:err.message,errors:err.errors},err.code||500)
     }
 }
 
